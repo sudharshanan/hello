@@ -1,0 +1,44 @@
+Certainly! Here's an example of a Jenkins Pipeline script using an Active Choice parameter with an if statement:
+
+```groovy
+pipeline {
+    agent any
+
+    parameters {
+        activeChoice(
+            name: 'FRUIT',
+            description: 'Select a fruit',
+            script: [
+                $class: 'GroovyScript',
+                script: '''
+                    def fruits = ['Apple', 'Banana', 'Orange']
+                    return fruits
+                '''
+            ]
+        )
+    }
+
+    stages {
+        stage('Build') {
+            steps {
+                script {
+                    def selectedFruit = params.FRUIT
+
+                    if (selectedFruit == 'Banana') {
+                        echo "You selected Banana! This is a great choice!"
+                    } else {
+                        echo "You selected ${selectedFruit}. Enjoy your fruit!"
+                    }
+                }
+            }
+        }
+    }
+}
+```
+
+In this script:
+
+- The `activeChoice` parameter is used to dynamically generate a list of fruit choices.
+- The `script` block inside the `stages` contains an if statement checking the selected fruit. It then echoes a message based on the selected fruit.
+
+Remember to adjust the logic inside the `script` block based on your specific requirements. Save this script as a Jenkins Pipeline job and run it to see the dynamic Active Choice parameter in action.
